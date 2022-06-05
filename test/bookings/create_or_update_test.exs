@@ -32,5 +32,20 @@ defmodule Flightex.Bookings.CreateOrUpdateTest do
 
       assert response == expected_response
     end
+
+    test "when there are invalid params, returns an error" do
+      params = %{
+        complete_date: ~N[2001-05-07 03:05:00],
+        local_origin: "Brasilia",
+        local_destination: "Bananeiras",
+        user_id: 1
+      }
+
+      response = CreateOrUpdate.call(params)
+
+      expected_response = {:error, "Invalid params"}
+
+      assert response == expected_response
+    end
   end
 end
