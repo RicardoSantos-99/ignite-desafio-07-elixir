@@ -4,8 +4,6 @@ defmodule FlightexTest do
   alias Flightex.Users.Agent, as: UserAgent
   alias Flightex.Bookings.Agent, as: BookingsAgent
 
-  import Flightex.Factory
-
   describe "start_agents/1" do
     test "starts the agents" do
       Flightex.start_agents()

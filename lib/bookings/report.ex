@@ -2,7 +2,7 @@ defmodule Flightex.Bookings.Report do
   alias Flightex.Bookings.Agent, as: BookingAgent
   alias Flightex.Bookings.Booking
 
-  def create(date_init, date_final, filename \\ "report.csv") do
+  def generate(%{date_init: date_init, date_final: date_final, filename: filename}) do
     order_list = build_booking_list(date_init, date_final)
 
     File.write(filename, order_list)
@@ -13,7 +13,7 @@ defmodule Flightex.Bookings.Report do
 
     bookings
     |> Map.values()
-    |> Enum.map(&filter_by_dates(&1, date_init, date_final))
+    |> Enum.map(&validate_date(&1, date_init, date_final))
     |> Enum.filter(&is_struct(&1))
     |> Enum.map(&order_string/1)
   end
@@ -26,11 +26,6 @@ defmodule Flightex.Bookings.Report do
          user_id: user_id
        }) do
     "#{user_id},#{local_origin},#{local_destination},#{complete_date}\n"
-  end
-
-  defp filter_by_dates(booking, date_init, date_final) do
-    booking
-    |> validate_date(date_init, date_final)
   end
 
   defp validate_date(booking, date_init, date_final) do
